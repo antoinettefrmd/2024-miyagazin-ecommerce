@@ -8,6 +8,22 @@ server.get("/", (req,res) => {
         res.render('accueil.ejs');
 });
 
+server.post("/", (req,res) => {
+        const mdp_attendu = "gerante" //changer avec la base de donée plus tard
+        const mdp = req.body.pswd;
+        if(mdp == mdp_attendu) {
+                res.redirect('/gerante');
+        } else {
+                //vérifier que la cliente est bien présente dans la base de donnée
+                if(1) {
+                        res.redirect('/clientele');
+                } else {
+                        res.render('mauvais_mdp.ejs'); //à upgrade
+                }
+        }
+
+});
+
 server.get("/clientele", (req,res) => {
         res.render('clientele.ejs');
 });

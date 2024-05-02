@@ -1,3 +1,39 @@
-h1 {
-        color: green;
+body{
+        background-color: rgb(98, 169, 98);
+}
+
+.jumbotron {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(199, 237, 143);
+        /* padding: 20px; */
+}
+
+.logo,
+.shop-name,
+.search-bar,
+.user-info,
+.nbr-pts,
+.total-panier {
+        margin-right: 10px;
+        margin-left: 10px;
+}
+
+.container-fluid {
+        margin-top: -32px; /* ajustez cette valeur selon vos besoins */
+}
+
+.bordure{
+        border-right: 1px solid black;
+}
+
+.gauche, .droite{
+        position: relative;
+        min-height: 600px; 
+        padding-top: 30px;
+}
+
+.gauche{
+        border-right: 2px solid black;
 }
