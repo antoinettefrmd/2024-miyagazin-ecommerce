@@ -1,0 +1,25 @@
+Table cliente 
+
+id_cliente
+nom 
+prenom
+anniversaire
+identifiant
+mot_de_passe
+nb_points
+
+
+table cadeau
+
+id_kdo
+titre
+prix
+couleur
+taille
+langue/matière
+stock
+
+
+Panier
+id_client
+id_kdo
