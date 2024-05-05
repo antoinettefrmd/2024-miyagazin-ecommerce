@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    
     // Expand Gifts
     $('#expandGifts').on('click', function() {
         $('#clients').removeClass('expanded').toggleClass('hidden');

@@ -9,10 +9,10 @@ function Database() {
         port: 5432
     });
 
-    this.insert = async function(nom, prenom, date, ident, mdp) {
+    this.insert = async function(nom, prenom, mail, date, ident, mdp) {
         try {
             client = await pool.connect();
-            await client.query("INSERT INTO cliente (nom, prenom, date, ident, mdp, point) VALUES ($1, $2, $3, $4, $5, $6)", [nom, prenom, date, ident, mdp, 50]);
+            await client.query("INSERT INTO cliente (nom, prenom, mail, anniversaire, identifiant, mdp, points) VALUES ($1, $2, $3, $4, $5, $6, $7)", [nom, prenom, mail, date, ident, mdp, 50]);
             client.release();
         }
         catch(error) {

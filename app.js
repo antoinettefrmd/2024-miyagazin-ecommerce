@@ -37,7 +37,24 @@ server.get("/gerante", async (req,res) => {
                 const gifts = await bdd.retourneCadeaux(); 
                 res.render('gerante.ejs', { clients: clients, gifts: gifts });
         } catch(error) {
-                console.error("Erreur pendant l'affichage des clients :", error);
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante', async (req, res) => {
+        try {
+                var nom = req.body.nom;
+                var prenom = req.body.prenom;
+                var email = req.body.email;
+                var anniversaire = req.body.anniversaire;
+                var ident = req.body.identifiant;
+                var mdp = req.body.mdp;
+                await bdd.insert(nom,prenom,email,anniversaire,ident,mdp);
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
                 res.render('erreur.ejs');
         }
 });

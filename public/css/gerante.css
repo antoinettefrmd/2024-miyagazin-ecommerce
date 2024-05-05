@@ -37,4 +37,24 @@
     
 .hidden {
         display: none;
-    }
+}
+
+#formContainer {
+        display: grid;
+        grid-template-columns: auto 1fr; /* Première colonne de largeur automatique, deuxième colonne qui prend le reste de l'espace */
+        grid-gap: 10px; /* Espacement entre les lignes */
+}
+
+.form-row {
+        display: grid;
+        grid-template-columns: auto 1fr; /* Deux colonnes pour chaque ligne */
+        align-items: center; /* Aligner les éléments verticalement au centre */
+}
+
+.form-row label {
+        margin-right: 10px; /* Marge à droite pour séparer le label de l'input */
+}
+
+.form-row input {
+        width: 100%; /* L'input occupe tout l'espace disponible */
+}
