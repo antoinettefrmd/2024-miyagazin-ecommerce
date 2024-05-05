@@ -34,7 +34,7 @@ function Database() {
         }
     }
 
-    this.retourneCadeau = async function() {
+    this.retourneCadeaux = async function() {
         try {
             const client = await pool.connect();
             const result = await client.query("SELECT titre, prix FROM cadeau");

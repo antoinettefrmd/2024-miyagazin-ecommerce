@@ -1,3 +1,40 @@
-h1 {
-        color: purple;
+.container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
 }
+
+.section {
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: grid; /* Ajout */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajout */
+        grid-gap: 20px; /* Ajout */
+}
+
+.section h3, .section p {
+        margin: 0; /* Ajout pour supprimer les marges par défaut */
+}
+
+#expandGifts, #expandClients {
+        display: block;
+        margin: 10px 0;
+}
+
+.grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Changez 200px à la largeur de la colonne souhaitée */
+        grid-gap: 20px; 
+}
+
+.gift .client {
+        border: 1px solid #ccc;
+        padding: 10px;
+}
+.expanded {
+        grid-column: 1 / span 2; /* Pour occuper toute la largeur */
+}
+    
+.hidden {
+        display: none;
+    }

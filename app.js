@@ -4,6 +4,7 @@ const port = 8080;
 server.use(express.json());
 server.use(express.urlencoded({extended:true}));
 const bdd = require ('./database/database');
+server.use(express.static('public'));
 
 
 server.get("/", (req,res) => {
@@ -31,13 +32,13 @@ server.get("/clientele", (req,res) => {
 });
 
 server.get("/gerante", async (req,res) => {
-        // res.render('gerante.ejs');
         try {
-                const clients = await bdd.afficherClients();
-                res.render('gerante.ejs', { clients: clients });
+                const clients = await bdd.retourneClientes();
+                const gifts = await bdd.retourneCadeaux(); 
+                res.render('gerante.ejs', { clients: clients, gifts: gifts });
         } catch(error) {
                 console.error("Erreur pendant l'affichage des clients :", error);
-                res.render('erreur.ejs'); // gérer l'affichage en cas d'erreur
+                res.render('erreur.ejs');
         }
 });
     
