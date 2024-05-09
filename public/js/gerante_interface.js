@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    
+
     // Expand Gifts
     $('#expandGifts').on('click', function() {
         $('#clients').removeClass('expanded').toggleClass('hidden');
@@ -17,4 +17,6 @@ $(document).ready(function() {
         $('#gifts').removeClass('hidden').removeClass('expanded');
         $('#clients').removeClass('hidden').removeClass('expanded');
     });
+
+    $('#formContainer').hide();
 });

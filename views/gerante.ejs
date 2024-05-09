@@ -13,19 +13,18 @@
 
         </head>
         <body>
-                <h1>Bienvenue à la gérante</h1>
-
-                <nav> <!-- prends toute la largeur de la page-->
-                        <!-- lien cliquable vers deconnexion -->
-                        <!-- position fixe -->
+                <nav>
+                        <h1>Bienvenue sur la page de gestion</h1>
+                        <div>
+                                <img src="/img/logo.png" alt="logo de la boutique" class="img-fluid" widht="50" height="50">
+                                <button id="expandClients">Clients</button>
+                                <button id="expandGifts">Cadeaux</button>
+                                <button id="showAll">Voir tout</button>
+                                <form action="http://localhost:8080/">
+                                        <input type="submit" value="Retour">
+                                </form>
+                        </div>
                 </nav>
-
-                <button id="expandGifts">Expand Gifts</button>
-                <button id="expandClients">Expand Clients</button>
-                <button id="showAll">Show All</button>
-                <form action="http://localhost:8080/", >
-                        <input type="submit" value="Retour">
-                </form>
 
                 <div class="container">
                         <div id="clients" class="section">
@@ -75,11 +74,6 @@
                             <button type="submit">Envoyer</button>
                         </form>
                     </div>
-                    
-<!-- 
-                <form action="http://localhost:8080/", >
-                        <input type="submit" value="back">
-                </form> -->
 
         </body>
 </html>
