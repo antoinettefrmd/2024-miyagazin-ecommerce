@@ -24,7 +24,7 @@ function Database() {
     this.retourneClientes = async function() { // on pourrait faire une fonction qui fait soit l'un soit l'autre en fonction de son arg
         try {
             const client = await pool.connect();
-            const result = await client.query("SELECT nom, prenom FROM cliente");
+            const result = await client.query("SELECT id_cliente, nom, prenom FROM cliente");
             const clients = result.rows;
             client.release();
             return clients;
@@ -47,11 +47,15 @@ function Database() {
         }
     }
 
-    this.suprimmeCliente = async function() {
+    this.suprimmeCliente = async function(id) {
         try {
+            const client = await pool.connect();
+            await client.query("DELETE FROM cliente WHERE id_cliente = $1", [id]);
+            client.release();
         }
-        catch {
-
+        catch (error) {
+            console.error("Erreur pendant la supression de la cliente :", error);
+            throw new Error("Problème de supression de cliente");
         }
     }
 }

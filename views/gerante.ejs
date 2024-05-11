@@ -3,11 +3,8 @@
         <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <!-- <script src="../jquery-3.7.1.js"></script> -->
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <link rel="stylesheet" href="/css/gerante.css">
-                <script src="../database/database.js"></script> 
-                <!-- <script src="../public/js/gerante_interface.js"></script>  -->
                 <script src="/js/gerante_interface.js"></script> 
                 <title>Le miyagazin</title>
 
@@ -19,23 +16,25 @@
                                 <img src="/img/logo.png" alt="logo de la boutique" class="img-fluid" widht="50" height="50">
                                 <button id="expandClients">Clients</button>
                                 <button id="expandGifts">Cadeaux</button>
-                                <button id="showAll">Voir tout</button>
                                 <form action="http://localhost:8080/">
-                                        <input type="submit" value="Retour">
+                                        <input type="submit" value="Déconnexion">
                                 </form>
                         </div>
                 </nav>
 
                 <div class="container">
+                        
                         <div id="clients" class="section">
+                                <div><h3>Ajouter une cliente <button id='ajoutCliente'>&#10133;</button></h3></div>
                                 <% clients.forEach(function(client) { %>
-                                <div class="client">
+                                <div class="client" >
                                         <h3><%= client.nom %></h3>
-                                        <p><%= client.prenom %></p>
+                                        <p> <%= client.prenom %> 
+                                        <button class="modifCliente bouttonEmoji">&#128395;</button> 
+                                        <button class=" suppCliente bouttonEmoji" data-id="<%= client.id_cliente %>">&#10006;</button></p>
                                 </div>
                                 <% }); %>
                         </div>
-
                         <div id="gifts" class="section">
                                 <% gifts.forEach(function(gift) { %>
                                 <div class="gift">
@@ -43,10 +42,9 @@
                                 </div>
                                 <% }); %>
                         </div>
-                </div>
-  
-                <div id="formContainer">
-                        <form id="myForm" action="/gerante" method="post">
+
+                        <div id="formContainer" class='section'>
+                        <form id="myForm" action="/gerante/ajoutCliente" method="post">
                             <div class="form-row">
                                 <label for="nom">Nom :</label>
                                 <input type="text" id="nom" name="nom" placeholder="Votre nom">
@@ -74,6 +72,9 @@
                             <button type="submit">Envoyer</button>
                         </form>
                     </div>
+                </div>
+  
+                
 
         </body>
 </html>

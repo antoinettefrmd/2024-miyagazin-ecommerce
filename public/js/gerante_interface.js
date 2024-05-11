@@ -1,22 +1,45 @@
 $(document).ready(function() {
 
     // Expand Gifts
-    $('#expandGifts').on('click', function() {
+    function expandedGifts() {
         $('#clients').removeClass('expanded').toggleClass('hidden');
         $('#gifts').removeClass('hidden').toggleClass('expanded');
-    });
+    }
 
-    // Expand Clients
-    $('#expandClients').on('click', function() {
+    function expandedClients() {
         $('#gifts').removeClass('expanded').toggleClass('hidden');
         $('#clients').removeClass('hidden').toggleClass('expanded');
+    }
+
+    function reduceGifts()
+    {
+        $('#gifts').removeClass('expanded').removeClass('hidden');
+    }
+
+    $('#expandGifts').on('click', function() {
+        expandedGifts();
     });
 
-    // Show All
-    $('#showAll').on('click', function() {
-        $('#gifts').removeClass('hidden').removeClass('expanded');
-        $('#clients').removeClass('hidden').removeClass('expanded');
+    $('#expandClients').on('click', function() {
+        expandedClients();
     });
-
+  
     $('#formContainer').hide();
+    
+    $('#ajoutCliente').on('click', function() {
+        $('#gifts').toggleClass('hidden');
+        $('#formContainer').show();
+    });
+
+    $('.modifCliente').on('click', function() {
+        $('#gifts').toggleClass('hidden');
+    });
+
+    $('.suppCliente').on('click', function() {
+        var idCliente = $(this).data('id');
+        console.log(idCliente);
+        $.post("http://localhost:8080/gerante/suppCliente", { idCliente : idCliente }, function (data) {
+            console.log(data);
+        });
+    });
 });

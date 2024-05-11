@@ -3,8 +3,8 @@ const server = new express();
 const port = 8080;
 server.use(express.json());
 server.use(express.urlencoded({extended:true}));
-const bdd = require ('./database/database');
 server.use(express.static('public'));
+const bdd = require ('./database/database');
 
 
 server.get("/", (req,res) => {
@@ -42,7 +42,7 @@ server.get("/gerante", async (req,res) => {
         }
 });
 
-server.post('/gerante', async (req, res) => {
+server.post('/gerante/ajoutCliente', async (req, res) => {
         try {
                 var nom = req.body.nom;
                 var prenom = req.body.prenom;
@@ -56,6 +56,19 @@ server.post('/gerante', async (req, res) => {
         catch(error) {
                 console.error("Erreur :", error);
                 res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante/suppCliente', async (req, res) => {
+        try {
+                var id_cliente = req.body.idCliente;
+                await bdd.suprimmeCliente(id_cliente);
+                console.log("Cliente supprimée avec succès");
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+                res.redirect('/gerante');
         }
 });
     
