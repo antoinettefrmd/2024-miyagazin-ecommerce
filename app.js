@@ -59,7 +59,7 @@ server.post('/gerante', async (req, res) => {
                 var anniversaire = req.body.anniversaire;
                 var ident = req.body.identifiant;
                 var mdp = req.body.mdp;
-                await bdd.insert(nom,prenom,email,anniversaire,ident,mdp);
+                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp);
                 res.redirect('/gerante');
         }
         catch(error) {
