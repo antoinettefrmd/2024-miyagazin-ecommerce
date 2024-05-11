@@ -9,8 +9,13 @@ body{
         background-color: rgb(199, 237, 143);
         /* padding: 20px; */
 }
+/* 
+#jumbo {
+        background-color: red;
+        margin-top: 20px;
+} */
 
-.logo,
+/* .logo,
 .shop-name,
 .search-bar,
 .user-info,
@@ -18,10 +23,18 @@ body{
 .total-panier {
         margin-right: 10px;
         margin-left: 10px;
+} */
+
+.search-bar, .shop-name{
+        margin-top: 60px;
 }
 
-.container-fluid {
-        margin-top: -32px; /* ajustez cette valeur selon vos besoins */
+.logo{
+        margin-top: 30px;
+}
+
+#container1{
+        margin-top: -32px;
 }
 
 .bordure{
@@ -37,3 +50,24 @@ body{
 .gauche{
         border-right: 2px solid black;
 }
+
+#gifts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+}
+
+.gift {
+        border: 1px solid black;
+        padding: 10px;
+}
+
+.gift img {
+        width: 100%; /* Redimensionnez l'image pour qu'elle occupe 100% de la largeur du conteneur */
+        height: auto; /* Assurez-vous que la hauteur est automatiquement ajustée pour maintenir les proportions de l'image */
+}
+    
+/* 
+.gift-title {
+        font-size: 15rem;
+} */

@@ -8,21 +8,22 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                 <!-- <script src="/js/clientele.js"></script> -->
+                <script src="../database/database.js"></script>
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="/css/clientele.css">
                 <title>Le miyagazin</title>
         </head>
         <body>
                 <div class="jumbotron">
-                        <div class="container-fluid">
+                        <div class="container-fluid" id="jumbo">
                                 <div class="row">
-                                        <div class="col-1 logo">
+                                        <div class="col-sm-1 logo">
                                                 <img src="/img/logo.png" alt="logo de la boutique" class="img-fluid" widht="100" height="100">
                                         </div>
                                         <div class="col-sm-2 order-sm-2 shop-name">
                                                 <h2 id="nom_mag">Le myagasin</h2>
                                         </div>
-                                        <div class="col-sm-2 order-sm-3 search-bar">
+                                        <div class="col-sm-3 order-sm-3 search-bar">
                                                 <input type="search" id="rechercher" />
                                                 <button id="boutton-recherche">
                                                         <img src="/img/loupe.png" alt="image d'une loupe" width="30" height="30">
@@ -30,12 +31,15 @@
                                         </div>
                                         <div class="col-sm-2 order-sm-4 user-info">
                                                 <img src="/img/user.png" alt="image d'un utilisateur" widht="100" height="100">
-                                                <h1 id="nom">Nathalie</h1>
+                                                <!-- <h1 id="nom">Nathalie</h1> -->
+                                                <h1 id="nom"><%= prenom %></h1>
+                                                <h1 id="nom"><%= nom %></h1>
                                         </div>
                                         <div class="col-sm-2 order-sm-5 nbr-pts">
                                                 <div id="tab_pts">
                                                         <p>Vous avez </p>
-                                                        <p id="points">1000</p>
+                                                        <!-- <p id="points">1000</p> -->
+                                                        <p id="points"><%= points %></>
                                                         <p>Noiraudes</p>
                                                 </div>
                                         </div>
@@ -49,13 +53,16 @@
                                 </div>
                         </div>
                 </div>
-                <div class="container-fluid">
+                <div class="container-fluid" id="container1">
                         <div class="row">
                                 <!-- <div class="droite"> -->
                                 <div class="col-sm-4 order-sm-2 droite">
                                         <div id="panier-droite">
                                                 <img src="/img/panier.png" alt="photo panier" widht="100px" height="100px">
-                                                <h1>Votre panier est vide</h1>
+                                                <nav class="menu">
+                                                        <ul id = "liste_panier">
+                                                        </ul>
+                                                </nav>
                                         </div>
                                 </div>
                                 <!-- <div class="gauche"> -->
@@ -63,12 +70,29 @@
                                         <h1>Boutique de noiraudes</h1>
                                         <h2>Nous vous souhaitons la bienvenue dans votre univers de points</h2>
                                         <p>Vous trouverez ici des articles exclusifs auxquels vous avez un accès tout particulier en tant que membre du miyagasin. Vous pouvez obtenir des points à chaque achat, amusez vous bien !</p>
-                                        <!-- <div class="container-fluid">
-                                                <div class="row">
-                                                        <div class="col-sm-8" id = "cadeaux">
+                                        <div id="gifts" class="section">
+                                                <% gifts.forEach(function(gift) { %>
+                                                <div class="gift">
+                                                        <img src="/img/<%= gift.photo %>">
+                                                        <h3 class="gift-title"><%= gift.titre %></h3>
+                                                        <p class="gift-points"><%= gift.prix %> Noiraudes</p>
+                                                        <div class="progress-bar">
+                                                                <!-- <%var progressClass = (points >= gift.prix) ? 'progress-full' : 'progress-partial';%>
+                                                                <div class="progress <%= progressClass %>"></div>
+
+                                                                <div class="progress" style="width:<%= (points >= gift.prix) ? '100%' : (points / gift.prix) * 100 + '%' %>"></div>
+                                                                <div class="progress"></div> -->
                                                         </div>
+                                                        <p class="gift-stock"><% if (gift.stock === 1) { %>C'est le dernier exemplaire !<% } else { %>Il n'en reste plus que <%= gift.stock %> en stock.<% } %></p>
+                                                        <select class="options">
+                                                        <option value="couleur">Couleur</option>                        
+                                                        <option value="taille">Taille</option>
+                                                        <option value="matiere">Matière</option>
+                                                        <option value="langue">Langue</option>
+                                                        </select>
                                                 </div>
-                                        </div> -->
+                                                <% }); %>
+                                        </div>
                                         <form action="http://localhost:8080/", >
                                                 <input type="submit" value="Retour">
                                         </form>
