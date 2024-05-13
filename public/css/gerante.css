@@ -40,7 +40,7 @@ nav div {
 
 .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Changez 200px à la largeur de la colonne souhaitée */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         grid-gap: 20px; 
 }
 
@@ -50,7 +50,7 @@ nav div {
 }
 
 .expanded {
-        grid-column: 1 / span 2; /* Pour occuper toute la largeur */
+        grid-column: 1 / span 2;
 }
     
 .hidden {
@@ -75,4 +75,10 @@ nav div {
 
 .form-row input {
         width: 100%; /* L'input occupe tout l'espace disponible */
+}
+
+.bouttonEmoji {
+        background: none;
+        border: none; 
+        cursor: pointer;
 }

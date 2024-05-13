@@ -19,6 +19,8 @@ CREATE TABLE cadeau (
     id_kdo serial primary key,
     titre varchar(255) not null,
     prix integer not null,
+    couleur text,
+    taille integer,
     stock integer not null,
     photo varchar(255) not null
 );
