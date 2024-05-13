@@ -4,13 +4,15 @@
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <script src="../jquery-3.7.1.js" type="text/javascript"></script>
-                <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                <!-- <script src="/js/clientele.js"></script> -->
-                <script src="../database/database.js"></script>
+                
+                <!-- <script src="../database/database.js"></script> -->
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="/css/clientele.css">
+                <link rel="shortcut icon" href="/img/logo.png" />
                 <title>Le miyagazin</title>
         </head>
         <body>
@@ -21,7 +23,7 @@
                                                 <img src="/img/logo.png" alt="logo de la boutique" class="img-fluid" widht="100" height="100">
                                         </div>
                                         <div class="col-sm-2 order-sm-2 shop-name">
-                                                <h2 id="nom_mag">Le myagasin</h2>
+                                                <h2 id="nom_mag">Le miyagasin</h2>
                                         </div>
                                         <div class="col-sm-3 order-sm-3 search-bar">
                                                 <input type="search" id="rechercher" />
@@ -31,15 +33,14 @@
                                         </div>
                                         <div class="col-sm-2 order-sm-4 user-info">
                                                 <img src="/img/user.png" alt="image d'un utilisateur" widht="100" height="100">
-                                                <!-- <h1 id="nom">Nathalie</h1> -->
-                                                <h1 id="nom"><%= prenom %></h1>
-                                                <h1 id="nom"><%= nom %></h1>
+                                                <h1 id="prenom"><%= cliente.prenom %></h1>
+                                                <h1 id="nom"><%= cliente.nom %></h1>
                                         </div>
                                         <div class="col-sm-2 order-sm-5 nbr-pts">
                                                 <div id="tab_pts">
                                                         <p>Vous avez </p>
                                                         <!-- <p id="points">1000</p> -->
-                                                        <p id="points"><%= points %></>
+                                                        <p id="points"><%= cliente.points %></>
                                                         <p>Noiraudes</p>
                                                 </div>
                                         </div>
@@ -55,41 +56,53 @@
                 </div>
                 <div class="container-fluid" id="container1">
                         <div class="row">
-                                <!-- <div class="droite"> -->
                                 <div class="col-sm-4 order-sm-2 droite">
                                         <div id="panier-droite">
                                                 <img src="/img/panier.png" alt="photo panier" widht="100px" height="100px">
                                                 <nav class="menu">
-                                                        <ul id = "liste_panier">
-                                                        </ul>
+                                                    <ul id="liste_panier">
+                                                        <% panier.forEach(function(item) { %>
+                                                            <li><%= item.titre %> - Prix: <%= item.prix %>, Taille: <%= item.taille %>, Couleur: <%= item.couleur %></li>
+                                                        <% }); %>
+                                                    </ul>
                                                 </nav>
+                                                <button id="valider_panier">Valider panier</button>
                                         </div>
+                                            
                                 </div>
-                                <!-- <div class="gauche"> -->
                                 <div class="col-sm-8 gauche">
                                         <h1>Boutique de noiraudes</h1>
                                         <h2>Nous vous souhaitons la bienvenue dans votre univers de points</h2>
                                         <p>Vous trouverez ici des articles exclusifs auxquels vous avez un accès tout particulier en tant que membre du miyagasin. Vous pouvez obtenir des points à chaque achat, amusez vous bien !</p>
                                         <div id="gifts" class="section">
-                                                <% gifts.forEach(function(gift) { %>
-                                                <div class="gift">
-                                                        <img src="/img/<%= gift.photo %>">
-                                                        <h3 class="gift-title"><%= gift.titre %></h3>
-                                                        <p class="gift-points"><%= gift.prix %> Noiraudes</p>
-                                                        <div class="progress-bar">
-                                                                <!-- <%var progressClass = (points >= gift.prix) ? 'progress-full' : 'progress-partial';%>
-                                                                <div class="progress <%= progressClass %>"></div>
-
-                                                                <div class="progress" style="width:<%= (points >= gift.prix) ? '100%' : (points / gift.prix) * 100 + '%' %>"></div>
-                                                                <div class="progress"></div> -->
-                                                        </div>
-                                                        <p class="gift-stock"><% if (gift.stock === 1) { %>C'est le dernier exemplaire !<% } else { %>Il n'en reste plus que <%= gift.stock %> en stock.<% } %></p>
-                                                        <select class="options">
-                                                        <option value="couleur">Couleur</option>                        
-                                                        <option value="taille">Taille</option>
-                                                        <option value="matiere">Matière</option>
-                                                        <option value="langue">Langue</option>
-                                                        </select>
+                                                <% gifts.forEach(function(gift, index) { %>
+                                                <div id="gift" class="gift">
+                                                        <form>
+                                                                <input type="hidden" name="id_cli" value="<%= cliente.id_cliente %>">
+                                                                <input type="hidden" name="id_kdo" value="<%= gift.id_kdo %>">
+                                                                <img src="/img/<%= gift.photo %>">
+                                                                <h3 class="gift-title"><%= gift.titre %></h3>
+                                                                <p class="gift-points"><%= gift.prix %> Noiraudes</p>
+                                                                <p class="gift-stock"><% if (gift.stock === 1) { %>C'est le dernier exemplaire !<% } else { %>Il n'en reste plus que <%= gift.stock %> en stock.<% } %></p>
+                                                                <div class="mb-3">
+                                                                        <select class="form-select" id="taille" name="taille" required>
+                                                                        <option value="">Sélectionnez une taille</option>
+                                                                        <option value="small">Small</option>
+                                                                        <option value="medium">Medium</option>
+                                                                        <option value="large">Large</option>
+                                                                        </select>
+                                                                        <div class="invalid-feedback">Veuillez sélectionner une taille.</div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                        <input type="color" id="color" name="color" value="#000000" required>
+                                                                        <div class="invalid-feedback">Veuillez sélectionner une couleur.</div>
+                                                                </div>
+                                                                <button id="ajouter_panier_<%= index%>" type="submit" formmethod="post" class="btn btn-transparent border border-dark" data-id="<%= gift.id %>">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                                                                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"/>
+                                                                        </svg>
+                                                                </button>
+                                                        </form>
                                                 </div>
                                                 <% }); %>
                                         </div>
@@ -100,4 +113,5 @@
                         </div>
                 </div>
         </body>
+        <script src="/js/clientele.js"></script>
 </html>

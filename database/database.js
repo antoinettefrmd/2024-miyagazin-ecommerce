@@ -69,17 +69,65 @@ function Database() {
         }
     }
 
-    this.retourneCliente = async function(identifiant, mdp) {
+    this.retourneCliente = async function(id) {
         try{
             const client = await pool.connect();
-            const result = await client.query("SELECT nom, prenom, points FROM cliente WHERE identifiant = $1 AND mdp = $2", [identifiant, mdp]);
+            const result = await client.query("SELECT * FROM cliente WHERE id_cliente = $1", [id]);
             const res = result.rows;
-            // console.log("res : ",res);
             client.release();
             return res;
         } catch(error) {
             console.error("Erreur pendant la recherche de cliente : ",error);
             throw new Error("Problème récupération cliente dans retourne cliente");
+        }
+    }
+
+    this.retourneIdCliente = async function(identifiant, mdp) {
+        try{
+            const client = await pool.connect();
+            const result = await client.query("SELECT id_cliente FROM cliente WHERE identifiant = $1 AND mdp = $2", [identifiant, mdp]);
+            const res = result.rows;
+            client.release();
+            return res;
+        } catch(error) {
+            console.error("Erreur pendant la recherche de cliente : ",error);
+            throw new Error("Problème récupération cliente dans retourne cliente");
+        }
+    }
+
+    this.ajoutPanier = async function(id_cliente, id_kdo, couleur, taille) {
+        try {
+            client = await pool.connect();
+            await client.query("INSERT INTO panier (id_cliente, id_kdo, couleur, taille) VALUES ($1, $2, $3, $4)", [id_cliente, id_kdo, couleur, taille]);
+            client.release();
+        }
+        catch(error) {
+            console.error("Erreur pendant l'insertion au panier :", error);
+            throw new Error("Problème d'insertion");
+        }
+    }
+
+    this.affichePanier = async function(id) {
+        try{
+            const client = await pool.connect();
+            const result = await client.query("SELECT titre, prix, taille, couleur FROM panier JOIN cadeau ON panier.id_kdo = cadeau.id_kdo WHERE id_cliente = $1", [id]);
+            const res = result.rows;
+            client.release();
+            return res;
+        } catch(error) {
+            console.error("Erreur pendant la recherche de panier : ",error);
+            throw new Error("Problème récupération panier");
+        }
+    }
+
+    this.supprimerPanier = async function() {
+        try{
+            const client = await pool.connect();
+            const result = await client.query("TRUNCATE TABLE panier");
+            client.release();
+        } catch(error) {
+            console.error("Erreur pendant la suppression du panier : ",error);
+            throw new Error("Problème supression panier");
         }
     }
 }

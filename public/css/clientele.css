@@ -1,29 +1,14 @@
 body{
-        background-color: rgb(98, 169, 98);
+        background-color:#9ACD32;
 }
 
 .jumbotron {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: rgb(199, 237, 143);
+        background-color: #556B2F;
         /* padding: 20px; */
 }
-/* 
-#jumbo {
-        background-color: red;
-        margin-top: 20px;
-} */
-
-/* .logo,
-.shop-name,
-.search-bar,
-.user-info,
-.nbr-pts,
-.total-panier {
-        margin-right: 10px;
-        margin-left: 10px;
-} */
 
 .search-bar, .shop-name{
         margin-top: 60px;
@@ -63,11 +48,11 @@ body{
 }
 
 .gift img {
-        width: 100%; /* Redimensionnez l'image pour qu'elle occupe 100% de la largeur du conteneur */
-        height: auto; /* Assurez-vous que la hauteur est automatiquement ajustée pour maintenir les proportions de l'image */
+        width: 100%;
+        height: auto;
+}
+
+#liste_panier{
+        margin-top: 50px;
 }
     
-/* 
-.gift-title {
-        font-size: 15rem;
-} */

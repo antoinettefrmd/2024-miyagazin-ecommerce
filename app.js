@@ -12,32 +12,61 @@ server.get("/", (req,res) => {
 });
 
 server.post("/", async (req,res) => {
-        const mdp_attendu = "gerante" //changer avec la base de donée plus tard
+        await bdd.supprimerPanier();
+        const mdp_attendu = "gerante"
         const pseudo = req.body.identifiant;
         const mdp = req.body.pswd;
         if(mdp == mdp_attendu) {
                 res.redirect('/gerante');
         } else {
-                //vérifier que la cliente est bien présente dans la base de donnée
                 if(await bdd.estclient(pseudo,mdp)) {
-                        const cliente = await bdd.retourneCliente(pseudo,mdp);     
-                        const nnom = cliente[0].nom;
-                        const prenom = cliente[0].prenom;
-                        const ppoints = cliente[0].points; 
-                        res.redirect('/clientele?nom=' + nnom + '&points=' + ppoints + '&prenom=' + prenom);
+                        const cliente = await bdd.retourneIdCliente(pseudo,mdp);
+                        res.redirect('/clientele?id=' + cliente[0].id_cliente);
                 } else {
-                        console.log("non");
                         res.render('mauvais_mdp.ejs'); //à upgrade
                 }
         }
 });
 
 server.get("/clientele", async (req,res) => {
-        const nom = req.query.nom;
-        const prenom = req.query.prenom;
-        const points = req.query.points;
-        const gifts = await bdd.retourneCadeaux(); 
-        res.render('clientele.ejs', {gifts: gifts, nom: nom, prenom: prenom, points: points});
+        try {
+                const id_cliente = req.query.id;
+                const cliente = await bdd.retourneCliente(id_cliente);
+                const gifts = await bdd.retourneCadeaux();
+                const panier = await bdd.affichePanier(id_cliente);
+                res.render('clientele.ejs', {gifts: gifts, cliente: cliente[0], panier, panier});
+        } catch (error) {
+                console.error("Error parsing client data:", error);
+        }
+});
+
+server.post('/clientele', async (req, res) => {
+        try {
+                const taill = req.body.taille;
+                const color = req.body.color;
+                var kdo = req.body.id_kdo;
+                var id_cliente = req.body.id_cli;
+                await bdd.ajoutPanier(id_cliente, kdo, color, taill);
+                // console.log("Panier ajouter avec succès:");
+                const gifts = await bdd.retourneCadeaux();
+                const cliente = await bdd.retourneCliente(id_cliente);
+                const panier = await bdd.affichePanier(id_cliente)
+                res.render('clientele.ejs', {gifts: gifts, cliente: cliente[0], panier: panier});
+
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+        }
+});
+
+server.post('/clientele/valider-panier', async (req, res) => {
+        try {
+                await bdd.supprimerPanier();
+                // console.log("panier supprimer avec succès");
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+        }
 });
 
 server.get("/gerante", async (req,res) => {
@@ -67,7 +96,6 @@ server.post('/gerante', async (req, res) => {
                 res.render('erreur.ejs');
         }
 });
-    
 
 server.use(express.static('public'));
 server.set('view engine', 'ejs');

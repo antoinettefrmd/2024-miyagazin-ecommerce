@@ -7,11 +7,11 @@ div {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        background-color: greenyellow;
+        background-color: #9ACD32;
         border: 5px solid purple;
         padding: 20px;
 }
 
 body {
-        background-color: green;
+        background-color: #556B2F;
 }
