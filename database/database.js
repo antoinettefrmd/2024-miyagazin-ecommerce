@@ -20,11 +20,36 @@ function Database() {
             throw new Error("Problème d'insertion");
         }
     }
+    
+    this.insertCadeau = async function(titre, prix, couleur, taille, stock, photo) {
+        try {
+            client = await pool.connect();
+            await client.query("INSERT INTO cadeau (titre, prix, couleur, taille, stock, photo) VALUES ($1, $2, $3, $4, $5, $6, $7)", [titre, prix, couleur, taille, stock, photo]);
+            client.release();
+        }
+        catch(error) {
+            console.error("Erreur pendant l'insertion :", error);
+            throw new Error("Problème d'insertion");
+        }
+    }
+
+    this.retourneUneCliente = async function(id) { 
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cliente WHERE id_cliente = $1", [id]);
+            const clients = result.rows;
+            client.release();
+            return clients;
+        } catch(error) {
+            console.error("Erreur pendant la récupération des clients :", error);
+            throw new Error("Problème de récupération des clients");
+        }
+    }
 
     this.retourneClientes = async function() { // on pourrait faire une fonction qui fait soit l'un soit l'autre en fonction de son arg
         try {
             const client = await pool.connect();
-            const result = await client.query("SELECT id_cliente, nom, prenom FROM cliente");
+            const result = await client.query("SELECT * FROM cliente");
             const clients = result.rows;
             client.release();
             return clients;

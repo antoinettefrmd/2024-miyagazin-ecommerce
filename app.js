@@ -42,6 +42,17 @@ server.get("/gerante", async (req,res) => {
         }
 });
 
+server.get("/gerante/returnOneClient", async (req,res) => { 
+        try {    
+                const cliente = await bdd.retourneUneCliente(req.query.idCliente);
+                res.json(cliente);
+        } catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+
 server.post('/gerante/ajoutCliente', async (req, res) => {
         try {
                 var nom = req.body.nom;
@@ -59,11 +70,55 @@ server.post('/gerante/ajoutCliente', async (req, res) => {
         }
 });
 
+
+server.post('/gerante/modifCliente', async (req, res) => {
+        try {
+                var id = parseInt(req.body.id, 10);
+                var nom = req.body.nom;
+                var prenom = req.body.prenom;
+                var email = req.body.email;
+                var ident = req.body.identifiant;
+                var mdp = req.body.mdp;
+                const cliente = await bdd.retourneUneCliente(id);
+                var anniversaire = cliente[0].anniversaire;
+                
+                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp);
+                await bdd.suprimmeCliente(id);
+
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante/ajoutCadeau', async (req, res) => {
+        try {
+                var titre = req.body.titre;
+                var prix = req.body.prix;
+                var couleur = req.body.couleur;
+                var taille = req.body.taille;
+                var stock = req.body.stock;
+                var photo = req.body.photo;
+                await bdd.insertCliente(titre,prix,couleur,taille,stock,photo);
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+
+
 server.post('/gerante/suppCliente', async (req, res) => {
         try {
                 var id_cliente = req.body.idCliente;
                 await bdd.suprimmeCliente(id_cliente);
                 console.log("Cliente supprimée avec succès");
+                res.redirect('/gerante');
+
         }
         catch(error) {
                 console.error("Erreur :", error);

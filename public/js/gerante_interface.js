@@ -1,38 +1,46 @@
+// const { format } = require("path/posix");
+
 $(document).ready(function() {
 
-    // Expand Gifts
-    function expandedGifts() {
+     // Expand Gifts
+     $('#expandGifts').on('click', function() {
         $('#clients').removeClass('expanded').toggleClass('hidden');
         $('#gifts').removeClass('hidden').toggleClass('expanded');
-    }
+    });
 
-    function expandedClients() {
+    // Expand Clients
+    $('#expandClients').on('click', function() {
         $('#gifts').removeClass('expanded').toggleClass('hidden');
         $('#clients').removeClass('hidden').toggleClass('expanded');
-    }
-
-    function reduceGifts()
-    {
-        $('#gifts').removeClass('expanded').removeClass('hidden');
-    }
-
-    $('#expandGifts').on('click', function() {
-        expandedGifts();
     });
 
-    $('#expandClients').on('click', function() {
-        expandedClients();
+    // Show All
+    $('#showAll').on('click', function() {
+        $('#gifts').removeClass('hidden').removeClass('expanded');
+        $('#clients').removeClass('hidden').removeClass('expanded');
     });
-  
-    $('#formContainer').hide();
     
     $('#ajoutCliente').on('click', function() {
         $('#gifts').toggleClass('hidden');
-        $('#formContainer').show();
+        $('#cacheAnniv').show();
+        $('.formContainer').show();
+        $('#myForm').attr('action', '/gerante/ajoutCliente');
     });
 
-    $('.modifCliente').on('click', function() {
-        $('#gifts').toggleClass('hidden');
+
+    $('.modifCliente').on('click', function() { 
+        var idCliente = $(this).data('id'); 
+        $('#cacheAnniv').hide();
+        $('#myForm').attr('action', '/gerante/modifCliente');
+        $.get("http://localhost:8080/gerante/returnOneClient", { idCliente : idCliente },
+            function (data) {
+                $('#id').val(idCliente);
+                $('#nom').val(data[0].nom); 
+                $('#prenom').val(data[0].prenom); 
+                $('#email').val(data[0].mail); 
+                $('#identifiant').val(data[0].identifiant); 
+                $('#mdp').val(data[0].mdp); 
+            });
     });
 
     $('.suppCliente').on('click', function() {

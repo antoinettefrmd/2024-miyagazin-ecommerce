@@ -21,8 +21,6 @@ CREATE TABLE cadeau (
     prix integer not null,
     couleur text,
     taille integer,
-    langue varchar(255),
-    matiere varchar(30),
     stock integer not null,
     photo varchar(255) not null
 );
