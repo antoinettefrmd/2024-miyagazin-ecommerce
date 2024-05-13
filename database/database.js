@@ -2,11 +2,11 @@ function Database() {
 
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'antoinettefrmd',
+        user: 'levanah',
         host: 'localhost',
         database: 'miyagazin',
         password: 'mdp',
-        port: 5432
+        port: 5432  
     });
 
     this.insertCliente = async function(nom, prenom, mail, date, ident, mdp) {
@@ -33,7 +33,7 @@ function Database() {
         }
     }
 
-    this.retourneUneCliente = async function(id) { 
+    this.retourneCliente = async function(id) { 
         try {
             const client = await pool.connect();
             const result = await client.query("SELECT * FROM cliente WHERE id_cliente = $1", [id]);
@@ -62,8 +62,9 @@ function Database() {
     this.retourneCadeaux = async function() {
         try {
             const client = await pool.connect();
-            const result = await client.query("SELECT titre, prix FROM cadeau");
+            const result = await client.query("SELECT * FROM cadeau");
             const cadeaux = result.rows;
+            // console.log("kod : ",cadeaux);
             client.release();
             return cadeaux;
         } catch(error) {
@@ -81,6 +82,19 @@ function Database() {
         catch (error) {
             console.error("Erreur pendant la supression de la cliente :", error);
             throw new Error("Problème de supression de cliente");
+        }
+    }
+  
+    this.estclient = async function(identifiant, mdp) {
+        try{
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cliente WHERE identifiant = $1 AND mdp = $2", [identifiant, mdp]);
+            const res = result.rows;
+            client.release();
+            return res.length > 0;
+        } catch(error) {
+            console.error("Erreur pendant la recherche de cliente : ",error);
+            throw new Error("Problème récupération cliente dans estclient");
         }
     }
 }

@@ -1,7 +1,19 @@
 $(document).ready (function () {
-        // for(var i= 0; i < 20; i++) { //mettre ici le nombre d'article dispo
-        //         let randomarticle = $("</h2><img src=../images/" + getRandomInt(0,91) + ".jpg alt=\"JSP\"> <p>" + texte + "</p> </article>")
-        //         jemet.append(randomarticle)
-        //         listart.append($("<li><a href=#a" + i + ">Nonna " + i + "</a></li>"))
-        // }
+
+        listpanier = $("#liste_panier");
+        cadeaux = $("#cadeaux");
+        listpanier.append($("<li><p></li>"))
+
+        function adjustFontSize() {
+                var giftsContainer = $('#gifts');
+                var containerWidth = giftsContainer.width();
+                var fontSize = containerWidth / 400;
+                $('.gift-title').css('font-size', fontSize + 'rem');
+        }
+        
+        $(window).resize(function() {
+                adjustFontSize();
+        });
+        
+        adjustFontSize();            
 });

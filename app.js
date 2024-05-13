@@ -11,24 +11,33 @@ server.get("/", (req,res) => {
         res.render('accueil.ejs');
 });
 
-server.post("/", (req,res) => {
+server.post("/", async (req,res) => {
         const mdp_attendu = "gerante" //changer avec la base de donée plus tard
+        const pseudo = req.body.identifiant;
         const mdp = req.body.pswd;
         if(mdp == mdp_attendu) {
                 res.redirect('/gerante');
         } else {
                 //vérifier que la cliente est bien présente dans la base de donnée
-                if(1) {
-                        res.redirect('/clientele');
+                if(await bdd.estclient(pseudo,mdp)) {
+                        const cliente = await bdd.retourneCliente(pseudo,mdp);     
+                        const nnom = cliente[0].nom;
+                        const prenom = cliente[0].prenom;
+                        const ppoints = cliente[0].points; 
+                        res.redirect('/clientele?nom=' + nnom + '&points=' + ppoints + '&prenom=' + prenom);
                 } else {
+                        console.log("non");
                         res.render('mauvais_mdp.ejs'); //à upgrade
                 }
         }
-
 });
 
-server.get("/clientele", (req,res) => {
-        res.render('clientele.ejs');
+server.get("/clientele", async (req,res) => {
+        const nom = req.query.nom;
+        const prenom = req.query.prenom;
+        const points = req.query.points;
+        const gifts = await bdd.retourneCadeaux(); 
+        res.render('clientele.ejs', {gifts: gifts, nom: nom, prenom: prenom, points: points});
 });
 
 server.get("/gerante", async (req,res) => {
@@ -44,7 +53,7 @@ server.get("/gerante", async (req,res) => {
 
 server.get("/gerante/returnOneClient", async (req,res) => { 
         try {    
-                const cliente = await bdd.retourneUneCliente(req.query.idCliente);
+                const cliente = await bdd.retourneCliente(req.query.idCliente);
                 res.json(cliente);
         } catch(error) {
                 console.error("Erreur :", error);
@@ -79,7 +88,7 @@ server.post('/gerante/modifCliente', async (req, res) => {
                 var email = req.body.email;
                 var ident = req.body.identifiant;
                 var mdp = req.body.mdp;
-                const cliente = await bdd.retourneUneCliente(id);
+                const cliente = await bdd.retourneCliente(id);
                 var anniversaire = cliente[0].anniversaire;
                 
                 await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp);
