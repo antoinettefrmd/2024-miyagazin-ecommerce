@@ -20,8 +20,27 @@
                         <div class="container-fluid" id="jumbo">
                                 <div class="row">
                                         <div class="col-sm-1 logo">
-                                                <img src="/img/logo.png" alt="logo de la boutique" class="img-fluid" widht="100" height="100">
+                                                <img id="logo" src="/img/logo.png" alt="logo de la boutique" class="img-fluid" width="100" height="100">
                                         </div>
+                                        <script>
+                                                $(document).ready(function() {
+                                                    var anniversaire = '<%= cliente.anniversaire %>';
+                                            
+                                                    var dateActuelle = new Date();
+                                                    var jourActuel = dateActuelle.getDate();
+                                                    var moisActuel = dateActuelle.getMonth() + 1; // Les mois commencent à 0, donc on ajoute 1
+                                            
+                                                    var dateAnniversaire = new Date(anniversaire);
+                                                    var jourAnniversaire = dateAnniversaire.getDate();
+                                                    var moisAnniversaire = dateAnniversaire.getMonth() + 1;
+                                            
+                                                    if (jourActuel === jourAnniversaire && moisActuel === moisAnniversaire) {
+                                                        $('#logo').attr('src', '/img/anniversaire.jpg');
+                                                        $('#logo').attr('width', '500');
+                                                        $('#logo').attr('height', '500');
+                                                    }
+                                                });
+                                        </script>
                                         <div class="col-sm-2 order-sm-2 shop-name">
                                                 <h2 id="nom_mag">Le miyagasin</h2>
                                         </div>

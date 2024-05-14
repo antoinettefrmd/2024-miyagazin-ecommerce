@@ -16,7 +16,7 @@ server.post("/", async (req,res) => {
         const mdp_attendu = "gerante"
         const pseudo = req.body.identifiant;
         const mdp = req.body.pswd;
-        if(mdp == mdp_attendu) {
+        if(mdp == mdp_attendu && pseudo == mdp_attendu) {
                 res.redirect('/gerante');
         } else {
                 if(await bdd.estclient(pseudo,mdp)) {
@@ -28,17 +28,24 @@ server.post("/", async (req,res) => {
         }
 });
 
-server.get("/clientele", async (req,res) => {
-        try {
-                const id_cliente = req.query.id;
-                const cliente = await bdd.retourneCliente(id_cliente);
-                const gifts = await bdd.retourneCadeaux();
-                const panier = await bdd.affichePanier(id_cliente);
-                res.render('clientele.ejs', {gifts: gifts, cliente: cliente[0], panier, panier});
-        } catch (error) {
-                console.error("Error parsing client data:", error);
-        }
-});
+        server.get("/clientele", async (req,res) => {
+                try {
+                        const id_cliente = req.query.id;
+                        const cliente = await bdd.retourneCliente(id_cliente);
+                        const gifts = await bdd.retourneCadeauxPoints(cliente[0].points);
+                        const panier = await bdd.affichePanier(id_cliente);
+                        const ajd = new Date();
+                        const anniversaire = new Date(cliente[0].anniversaire);
+                        
+                        if (anniversaire.getMonth() === ajd.getMonth() && anniversaire.getDate() === ajd.getDate()) {
+                                console.log("Joyeux anniversaire");
+                                await bdd.ajoute100points(id_cliente);
+                        }
+                        res.render('clientele.ejs', {gifts: gifts, cliente: cliente[0], panier, panier});
+                } catch (error) {
+                        console.error("Error parsing client data:", error);
+                }
+        });
 
 server.post('/clientele', async (req, res) => {
         try {
@@ -48,8 +55,8 @@ server.post('/clientele', async (req, res) => {
                 var id_cliente = req.body.id_cli;
                 await bdd.ajoutPanier(id_cliente, kdo, color, taill);
                 // console.log("Panier ajouter avec succès:");
-                const gifts = await bdd.retourneCadeaux();
                 const cliente = await bdd.retourneCliente(id_cliente);
+                const gifts = await bdd.retourneCadeauxPoints(cliente[0].points);
                 const panier = await bdd.affichePanier(id_cliente)
                 res.render('clientele.ejs', {gifts: gifts, cliente: cliente[0], panier: panier});
 

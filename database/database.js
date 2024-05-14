@@ -1,11 +1,11 @@
 function Database() {
-
+    require('dotenv').config();
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'levanah',
+        user: process.env.DB_USER,
         host: 'localhost',
         database: 'miyagazin',
-        password: 'mdp',
+        password: process.env.DB_PASSWORD,
         port: 5432  
     });
 
@@ -30,6 +30,18 @@ function Database() {
         catch(error) {
             console.error("Erreur pendant l'insertion :", error);
             throw new Error("Problème d'insertion");
+        }
+    }
+
+    this.ajoute100points = async function(id_cliente){
+        try {
+            client = await pool.connect();
+            await client.query("UPDATE cliente SET points = points + 100 WHERE id_cliente = $1",[id_cliente]);
+            client.release();   
+        }
+        catch(error) {
+            console.error("Erreur pendant l'ajout des points :", error);
+            throw new Error("Problème d'modification");
         }
     }
 
@@ -63,6 +75,20 @@ function Database() {
         try {
             const client = await pool.connect();
             const result = await client.query("SELECT * FROM cadeau");
+            const cadeaux = result.rows;
+            // console.log("kod : ",cadeaux);
+            client.release();
+            return cadeaux;
+        } catch(error) {
+            console.error("Erreur pendant la récupération des cadeaux :", error);
+            throw new Error("Problème de récupération des cadeaux");
+        }
+    }
+
+    this.retourneCadeauxPoints = async function(points) {
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cadeau WHERE prix <= $1", [points]);
             const cadeaux = result.rows;
             // console.log("kod : ",cadeaux);
             client.release();
