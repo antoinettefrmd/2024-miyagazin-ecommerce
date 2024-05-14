@@ -34,8 +34,8 @@ CREATE TABLE panier (
 ----- Remplissage des tables
 
 INSERT INTO cliente VALUES
-(1, 'Smith', 'John', 'john.smith@example.com', '1975-05-16', 'j_smith', 'mdp1', 50),
-(2, 'García', 'María', 'maria.garcia@example.com', '1983-05-21', 'mariagarcia', 'password2', 50),
+(1, 'Smith', 'John', 'john.smith@example.com', '1975-05-20', 'j_smith', 'mdp1', 50),
+(2, 'García', 'María', 'maria.garcia@example.com', '1983-05-16', 'mariagarcia', 'password2', 50),
 (3, 'Kim', 'Seong', 'seong.kim@example.com', '1990-02-08', 'seong_k', 'senha3', 50),
 (4, 'Müller', 'Lukas', 'lukas.muller@example.com', '1988-09-25', 'lukas_m', 'passwort4', 50),
 (5, 'Chen', 'Wei', 'wei.chen@example.com', '1982-07-12', 'w_chen', 'password5', 50),

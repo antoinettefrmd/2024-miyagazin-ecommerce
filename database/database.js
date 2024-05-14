@@ -45,6 +45,18 @@ function Database() {
         }
     }
 
+    this.retireStock = async function(id_kdo){
+        try {
+            client = await pool.connect();
+            await client.query("UPDATE cadeau SET stock = stock - 1 WHERE id_kdo = $1",[id_kdo]);
+            client.release();   
+        }
+        catch(error) {
+            console.error("Erreur pendant l'ajout des points :", error);
+            throw new Error("Problème d'modification");
+        }
+    }
+
     this.retourneCliente = async function(id) { 
         try {
             const client = await pool.connect();
