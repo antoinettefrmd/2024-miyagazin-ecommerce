@@ -2,7 +2,7 @@ function Database() {
 
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'antoinettefrmd',
+        user: 'levanah',
         host: 'localhost',
         database: 'miyagazin',
         password: 'mdp',
