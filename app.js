@@ -80,7 +80,9 @@ server.get("/gerante", async (req,res) => {
         }
 });
 
-server.get("/gerante/returnOneClient", async (req,res) => { 
+// Gestion des clientes
+
+server.get("/gerante/retourneCliente", async (req,res) => { 
         try {    
                 const cliente = await bdd.retourneCliente(req.query.idCliente);
                 res.json(cliente);
@@ -125,8 +127,8 @@ server.post('/gerante/modifCliente', async (req, res) => {
                         nbp_cliente = nbp;
                 }
                 
-                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp, nbp_cliente);
                 await bdd.suprimmeCliente(id);
+                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp, nbp_cliente);
 
                 res.redirect('/gerante');
         }
@@ -135,25 +137,6 @@ server.post('/gerante/modifCliente', async (req, res) => {
                 res.render('erreur.ejs');
         }
 });
-
-server.post('/gerante/ajoutCadeau', async (req, res) => {
-        try {
-                var titre = req.body.titre;
-                var prix = req.body.prix;
-                var couleur = req.body.couleur;
-                var taille = req.body.taille;
-                var stock = req.body.stock;
-                var photo = req.body.photo;
-                await bdd.insertCliente(titre,prix,couleur,taille,stock,photo);
-                res.redirect('/gerante');
-        }
-        catch(error) {
-                console.error("Erreur :", error);
-                res.render('erreur.ejs');
-        }
-});
-
-
 
 server.post('/gerante/suppCliente', async (req, res) => {
         try {
@@ -170,6 +153,67 @@ server.post('/gerante/suppCliente', async (req, res) => {
         }
 });
     
+// Gestion des cadeaux
+
+server.get("/gerante/retourneCadeau", async (req,res) => { 
+        try {    
+                const cadeau = await bdd.retourneCadeau(req.query.idCadeau);
+                res.json(cadeau);
+        } catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante/ajoutCadeau', async (req, res) => {
+        try {
+                var titre = req.body.titre;
+                var prix = parseInt(req.body.prix,10);
+                var stock = req.body.stock;
+                var photo = req.body.photo;
+                await bdd.insertCadeau(titre,prix,stock,photo);
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante/modifCadeau', async (req, res) => {
+        try {
+                var id = parseInt(req.body.idCadeau, 10);
+                var titre = req.body.titre;
+                var prix = parseInt(req.body.prix,10);
+                var stock = req.body.stock;
+                var photo = req.body.photo;
+                
+                await bdd.suprimmeCadeau(id);
+                await bdd.insertCadeau(titre,prix,stock,photo);
+
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+        }
+});
+
+server.post('/gerante/suppCadeau', async (req, res) => {
+        try {
+                var id_cadeau = req.body.idCadeau;
+                await bdd.suprimmeCadeau(id_cadeau);
+                console.log("cadeau supprimée avec succès");
+                res.redirect('/gerante');
+        }
+        catch(error) {
+                console.error("Erreur :", error);
+                res.render('erreur.ejs');
+                res.redirect('/gerante');
+        }
+});
+
+
 
 server.use(express.static('public'));
 server.set('view engine', 'ejs');

@@ -2,12 +2,14 @@ function Database() {
 
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'levanah',
+        user: 'antoinettefrmd',
         host: 'localhost',
         database: 'miyagazin',
         password: 'mdp',
         port: 5432  
     });
+
+    // Gestion des clientes
 
     this.insertCliente = async function(nom, prenom, mail, date, ident, mdp, nbp) {
         try {
@@ -21,18 +23,6 @@ function Database() {
         }
     }
     
-    this.insertCadeau = async function(titre, prix, couleur, taille, stock, photo) {
-        try {
-            client = await pool.connect();
-            await client.query("INSERT INTO cadeau (titre, prix, couleur, taille, stock, photo) VALUES ($1, $2, $3, $4, $5, $6, $7)", [titre, prix, couleur, taille, stock, photo]);
-            client.release();
-        }
-        catch(error) {
-            console.error("Erreur pendant l'insertion :", error);
-            throw new Error("Problème d'insertion");
-        }
-    }
-
     this.retourneCliente = async function(id) { 
         try {
             const client = await pool.connect();
@@ -46,7 +36,7 @@ function Database() {
         }
     }
 
-    this.retourneClientes = async function() { // on pourrait faire une fonction qui fait soit l'un soit l'autre en fonction de son arg
+    this.retourneClientes = async function() { 
         try {
             const client = await pool.connect();
             const result = await client.query("SELECT * FROM cliente");
@@ -56,20 +46,6 @@ function Database() {
         } catch(error) {
             console.error("Erreur pendant la récupération des clients :", error);
             throw new Error("Problème de récupération des clients");
-        }
-    }
-
-    this.retourneCadeaux = async function() {
-        try {
-            const client = await pool.connect();
-            const result = await client.query("SELECT * FROM cadeau");
-            const cadeaux = result.rows;
-            // console.log("kod : ",cadeaux);
-            client.release();
-            return cadeaux;
-        } catch(error) {
-            console.error("Erreur pendant la récupération des cadeaux :", error);
-            throw new Error("Problème de récupération des cadeaux");
         }
     }
 
@@ -123,6 +99,62 @@ function Database() {
             throw new Error("Problème récupération cliente dans retourne cliente");
         }
     }
+
+    // Gestion des Cadeaux
+    
+
+    this.insertCadeau = async function(titre, prix, stock, photo) {
+        try {
+            client = await pool.connect();
+            await client.query("INSERT INTO cadeau (titre, prix, stock, photo) VALUES ($1, $2, $3, $4)", [titre, prix, stock, photo]);
+            client.release();
+        }
+        catch(error) {
+            console.error("Erreur pendant l'insertion :", error);
+            throw new Error("Problème d'insertion");
+        }
+    }
+    
+    this.retourneCadeau = async function(id) { 
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cadeau WHERE id_kdo = $1", [id]);
+            const cadeau = result.rows;
+            client.release();
+            return cadeau;
+
+        } catch(error) {
+            console.error("Erreur pendant la récupération des cadeaux :", error);
+            throw new Error("Problème de récupération des cadeaux");
+        }
+    }
+
+    this.retourneCadeaux = async function() { // on pourrait faire une fonction qui fait soit l'un soit l'autre en fonction de son arg
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cadeau");
+            const cadeaux = result.rows;
+            client.release();
+            return cadeaux;
+        } catch(error) {
+            console.error("Erreur pendant la récupération des cadeaux :", error);
+            throw new Error("Problème de récupération des cadeaux");
+        }
+    }
+
+    this.suprimmeCadeau = async function(id) {
+        try {
+            const client = await pool.connect();
+            await client.query("DELETE FROM cadeau WHERE id_kdo = $1", [id]);
+            client.release();
+        }
+        catch (error) {
+            console.error("Erreur pendant la supression du cadeau :", error);
+            throw new Error("Problème de supression du cadeau");
+        }
+    }
+    
+    // Gestion du Panier
 
     this.ajoutPanier = async function(id_cliente, id_kdo, couleur, taille) {
         try {

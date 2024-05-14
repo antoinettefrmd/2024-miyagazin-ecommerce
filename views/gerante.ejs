@@ -44,6 +44,8 @@
                             <% gifts.forEach(function(gift) { %>
                             <div class="gift">
                                     <h3><%= gift.titre %></h3>
+                                    <p> <button class="suppCadeau bouttonEmoji" data-id="<%= gift.id_kdo %>">&#10006;</button>
+                                        <button class="modifCadeau bouttonEmoji" data-id="<%= gift.id_kdo %>">&#128395;</button></p>
                             </div>
                             <% }); %>
                     </div>
@@ -86,54 +88,29 @@
                         <button type="submit">Envoyer</button>
                     </form>
                 </div>
-<!-- 
-                <div id="formContainer" class = section>
-                        <form id="myFormModif" action="/gerante/modifCliente" method="post" value="">
-                            <div class="form-row">
-                                <label for="nom">Nom :</label>
-                                <input type="text" id="nomModif" name="nom" placeholder="Son nom">
-                            </div>
-                            <div class="form-row">
-                                <label for="prenom">Prénom :</label>
-                                <input type="text" id="prenomModif" name="prenom" placeholder="Son prénom">
-                            </div>
-                            <div class="form-row">
-                                <label for="email">Email :</label>
-                                <input type="email" id="emailModif" name="email" placeholder="Son email">
-                            </div>
-                            <div class="form-row">
-                                <label for="identifiant">Identifiant :</label>
-                                <input type="text" id="identifiantModif" name="identifiant" placeholder="Son identifiant">
-                            </div>
-                            <div class="form-row">
-                                <label for="mdpModif">Mot de passe :</label>
-                                <input type="password" id="mdp" name="mdp" placeholder="Son mot de passe">
-                            </div>
-                            <button type="submit">Envoyer</button>
-                        </form>
-                    </div> -->
+
         
                 <div id="formContainer" class = section>
-                        <form id="myFormCadeau" action="/gerante/ajoutCadeau" method="post">
+                        <form id="myFormCadeau" method="post">
+                                <div class="form-row" style="display: none;">
+                                <label for="cadeau">ID-cadeau :</label>
+                                <input type="text" id="idCadeau" name="idCadeau" placeholder="Son id-cadeau">
+                                </div>
                             <div class="form-row">
                                 <label for="titre">Titre :</label>
                                 <input type="text" id="titre" name="titre" placeholder="Son titre">
                             </div>
                             <div class="form-row">
-                                <label for="prenom">Prénom :</label>
-                                <input type="text" id="prenom" name="prenom" placeholder="Son prénom">
+                                <label for="prix">Prix :</label>
+                                <input type="text" id="prix" name="prix" placeholder="Son prix">
                             </div>
                             <div class="form-row">
-                                <label for="email">Email :</label>
-                                <input type="email" id="email" name="email" placeholder="Son email">
+                                <label for="stock">Stock :</label>
+                                <input type="text" id="stock" name="stock" placeholder="Son stock">
                             </div>
                             <div class="form-row">
-                                <label for="identifiant">Identifiant :</label>
-                                <input type="text" id="identifiant" name="identifiant" placeholder="Son identifiant">
-                            </div>
-                            <div class="form-row">
-                                <label for="mdp">Mot de passe :</label>
-                                <input type="password" id="mdp" name="mdp" placeholder="Son mot de passe">
+                                <label for="photo">photo :</label>
+                                <input type="text" id="photo" name="photo" placeholder="Sa photo">
                             </div>
                             <button type="submit">Envoyer</button>
                         </form>

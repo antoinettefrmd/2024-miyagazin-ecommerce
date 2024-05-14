@@ -19,6 +19,9 @@ $(document).ready(function() {
         $('#gifts').removeClass('hidden').removeClass('expanded');
         $('#clients').removeClass('hidden').removeClass('expanded');
     });
+
+
+    // Gestion des clientes
     
     $('#ajoutCliente').on('click', function() {
         $('#gifts').toggleClass('hidden');
@@ -27,12 +30,11 @@ $(document).ready(function() {
         $('#myForm').attr('action', '/gerante/ajoutCliente');
     });
 
-
     $('.modifCliente').on('click', function() { 
         var idCliente = $(this).data('id'); 
         $('#cacheAnniv').hide();
         $('#myForm').attr('action', '/gerante/modifCliente');
-        $.get("http://localhost:8080/gerante/returnOneClient", { idCliente : idCliente },
+        $.get("http://localhost:8080/gerante/retourneCliente", { idCliente : idCliente },
             function (data) {
                 $('#id').val(idCliente);
                 $('#nom').val(data[0].nom); 
@@ -48,6 +50,36 @@ $(document).ready(function() {
         var idCliente = $(this).data('id');
         console.log(idCliente);
         $.post("http://localhost:8080/gerante/suppCliente", { idCliente : idCliente }, function (data) {
+            console.log(data);
+        });
+    });
+
+    // Gestion des cadeaux
+
+    $('#ajoutCadeau').on('click', function() {
+        $('#gifts').toggleClass('hidden');
+        $('.formContainer').show();
+        $('#myFormCadeau').attr('action', '/gerante/ajoutCadeau');
+    });
+
+    $('.modifCadeau').on('click', function() { 
+        var idCadeau = $(this).data('id'); 
+        $('#myFormCadeau').attr('action', '/gerante/modifCadeau');
+        $.get("http://localhost:8080/gerante/retourneCadeau", { idCadeau : idCadeau },
+            function (data) {
+                $('#idCadeau').val(idCadeau);
+                $('#titre').val(data[0].titre); 
+                $('#prix').val(data[0].prix); 
+                $('#stock').val(data[0].stock); 
+                $('#photo').val(data[0].photo);
+            });
+    });
+
+    $('.suppCadeau').on('click', function() {
+        var idCadeau = $(this).data('id');
+        console.log(idCadeau);
+        $.post("http://localhost:8080/gerante/suppCadeau", { idCadeau : idCadeau }, 
+        function (data) {
             console.log(data);
         });
     });

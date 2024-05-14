@@ -15,6 +15,7 @@ CREATE TABLE cliente (
 
 ALTER SEQUENCE cliente_id_cliente_seq RESTART WITH 51;
 
+
 CREATE TABLE cadeau (
     id_kdo serial primary key,
     titre varchar(255) not null,
@@ -22,6 +23,7 @@ CREATE TABLE cadeau (
     stock integer not null,
     photo varchar(255) not null
 );
+ALTER SEQUENCE cadeau_id_kdo_seq RESTART WITH 21;
 
 CREATE TABLE panier (
     id_cliente integer references cliente not null,
