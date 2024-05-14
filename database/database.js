@@ -2,17 +2,17 @@ function Database() {
 
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'levanah',
+        user: 'antoinettefrmd',
         host: 'localhost',
         database: 'miyagazin',
         password: 'mdp',
         port: 5432  
     });
 
-    this.insertCliente = async function(nom, prenom, mail, date, ident, mdp) {
+    this.insertCliente = async function(nom, prenom, mail, date, ident, mdp, nbp) {
         try {
             client = await pool.connect();
-            await client.query("INSERT INTO cliente (nom, prenom, mail, anniversaire, identifiant, mdp, points) VALUES ($1, $2, $3, $4, $5, $6, $7)", [nom, prenom, mail, date, ident, mdp, 50]);
+            await client.query("INSERT INTO cliente (nom, prenom, mail, anniversaire, identifiant, mdp, points) VALUES ($1, $2, $3, $4, $5, $6, $7)", [nom, prenom, mail, date, ident, mdp, nbp]);
             client.release();
         }
         catch(error) {

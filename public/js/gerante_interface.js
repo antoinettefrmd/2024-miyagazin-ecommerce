@@ -40,6 +40,7 @@ $(document).ready(function() {
                 $('#email').val(data[0].mail); 
                 $('#identifiant').val(data[0].identifiant); 
                 $('#mdp').val(data[0].mdp); 
+                $('#nbp').val(data[0].points); 
             });
     });
 

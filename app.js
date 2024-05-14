@@ -99,7 +99,8 @@ server.post('/gerante/ajoutCliente', async (req, res) => {
                 var anniversaire = req.body.anniversaire;
                 var ident = req.body.identifiant;
                 var mdp = req.body.mdp;
-                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp);
+                var nbp = parseInt(req.body.nbp, 10);
+                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp, nbp);
                 res.redirect('/gerante');
         }
         catch(error) {
@@ -116,10 +117,15 @@ server.post('/gerante/modifCliente', async (req, res) => {
                 var email = req.body.email;
                 var ident = req.body.identifiant;
                 var mdp = req.body.mdp;
+                var nbp = parseInt(req.body.nbp,10);
                 const cliente = await bdd.retourneCliente(id);
                 var anniversaire = cliente[0].anniversaire;
+                var nbp_cliente = cliente[0].points;
+                if(nbp > nbp_cliente) {
+                        nbp_cliente = nbp;
+                }
                 
-                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp);
+                await bdd.insertCliente(nom,prenom,email,anniversaire,ident,mdp, nbp_cliente);
                 await bdd.suprimmeCliente(id);
 
                 res.redirect('/gerante');
