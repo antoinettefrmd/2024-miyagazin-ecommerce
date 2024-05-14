@@ -1,11 +1,11 @@
 function Database() {
-
+    require('dotenv').config();
     const pg = require('pg');
     const pool = new pg.Pool({
-        user: 'antoinettefrmd',
+        user: process.env.DB_USER,
         host: 'localhost',
         database: 'miyagazin',
-        password: 'mdp',
+        password: process.env.DB_PASSWORD,
         port: 5432  
     });
 
@@ -23,6 +23,42 @@ function Database() {
         }
     }
     
+    this.insertCadeau = async function(titre, prix, couleur, taille, stock, photo) {
+        try {
+            client = await pool.connect();
+            await client.query("INSERT INTO cadeau (titre, prix, couleur, taille, stock, photo) VALUES ($1, $2, $3, $4, $5, $6, $7)", [titre, prix, couleur, taille, stock, photo]);
+            client.release();
+        }
+        catch(error) {
+            console.error("Erreur pendant l'insertion :", error);
+            throw new Error("Problème d'insertion");
+        }
+    }
+
+    this.ajoute100points = async function(id_cliente){
+        try {
+            client = await pool.connect();
+            await client.query("UPDATE cliente SET points = points + 100 WHERE id_cliente = $1",[id_cliente]);
+            client.release();   
+        }
+        catch(error) {
+            console.error("Erreur pendant l'ajout des points :", error);
+            throw new Error("Problème d'modification");
+        }
+    }
+
+    this.retireStock = async function(id_kdo){
+        try {
+            client = await pool.connect();
+            await client.query("UPDATE cadeau SET stock = stock - 1 WHERE id_kdo = $1",[id_kdo]);
+            client.release();   
+        }
+        catch(error) {
+            console.error("Erreur pendant l'ajout des points :", error);
+            throw new Error("Problème d'modification");
+        }
+    }
+
     this.retourneCliente = async function(id) { 
         try {
             const client = await pool.connect();
@@ -46,6 +82,34 @@ function Database() {
         } catch(error) {
             console.error("Erreur pendant la récupération des clients :", error);
             throw new Error("Problème de récupération des clients");
+        }
+    }
+
+    this.retourneCadeaux = async function() {
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cadeau");
+            const cadeaux = result.rows;
+            // console.log("kod : ",cadeaux);
+            client.release();
+            return cadeaux;
+        } catch(error) {
+            console.error("Erreur pendant la récupération des cadeaux :", error);
+            throw new Error("Problème de récupération des cadeaux");
+        }
+    }
+
+    this.retourneCadeauxPoints = async function(points) {
+        try {
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM cadeau WHERE prix <= $1", [points]);
+            const cadeaux = result.rows;
+            // console.log("kod : ",cadeaux);
+            client.release();
+            return cadeaux;
+        } catch(error) {
+            console.error("Erreur pendant la récupération des cadeaux :", error);
+            throw new Error("Problème de récupération des cadeaux");
         }
     }
 
@@ -153,7 +217,7 @@ function Database() {
             throw new Error("Problème de supression du cadeau");
         }
     }
-    
+
     // Gestion du Panier
 
     this.ajoutPanier = async function(id_cliente, id_kdo, couleur, taille) {
